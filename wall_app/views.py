@@ -1,14 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, HttpResponse
+from django.contrib import messages
+from login_app.models import Users
+from wall_app.models import Messages, Comments
+import bcrypt
 
 # Create your views here.
 
 
-def wall(request):
+def index(request):
+    if 'first_name' in request.session:
+        return render(request, "wall.html")
+    else:
+        return redirect("/register")
+
     # [] Display all messages on the main page
     # [] most recent message at the top
     # [] Allow users to post messages
-    return render(request, "wall.html")
-
 # [] Display all comments per message
 # [] oldest comment first
 # [] Allow users to comment on each message

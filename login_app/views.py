@@ -1,17 +1,18 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from login_app.models import Users
+from wall_app.models import Messages, Comments
 import bcrypt
 
 
 def index(request):
     # [x] root render where users can register or login
     # [] context to hold session stuff
-    if request.session:
-        return redirect("/wall")
-    # request.session['first_name'] = ''
-    else:
-        return render(request, "index.html")
+    # if 'first_name' not in request.session:
+    #     return redirect("/wall")
+    # # request.session['first_name'] = ''
+    # else:
+    return render(request, "index.html")
 
 
 def register(request):
@@ -22,7 +23,7 @@ def register(request):
         for key, value in errors.items():
             messages.error(request, value)
     # [x] if errors go back to register with messages
-        return redirect("/")
+        return redirect("/register")
     else:
         # [x] success only when errors = 0
         # [x] receive post information
@@ -42,7 +43,7 @@ def register(request):
                              birthday=birthday, email=email, password=pw_hash)
 
         messages.success(request, "Successfully registered!")
-        return redirect("/wall")
+        return redirect("/")
 
 
 def login(request):
@@ -50,7 +51,7 @@ def login(request):
     if len(errors) > 0:
         for key, value in errors.items():
             messages.error(request, value)
-        return redirect("/")
+        return redirect("/register")
 
     user = Users.objects.filter(email=request.POST['email'])
     if user:
@@ -58,23 +59,23 @@ def login(request):
         if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
             request.session['first_name'] = logged_user.first_name
             messages.success(request, "Successfully logged in!")
-            return redirect("/wall")
+            return redirect("/")
     else:
         messages.error(request, "Password did not match")
-    return redirect("/")
+    return redirect("/register")
 
 
 def success(request):
     if request.session['first_name'] == '':
-        return redirect("/")
+        return redirect("/register")
     else:
         # context = {
         #     "first_name": request.session['first_name']
         # }
-        return redirect("/wall")
+        return redirect("/")
         # return render(request, "success.html", context)
 
 
 def logout(request):
-    request.session.clear()
-    return redirect("/")
+    request.session.flush()
+    return redirect("/register")

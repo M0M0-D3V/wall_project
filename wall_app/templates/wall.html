@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<a href="{% url 'my_logout' %}">Log Out</a>
+<a href="{% url 'login:my_logout' %}">Log Out</a>
 <h2>Success! Welcome, {{first_name}}!</h2>
 <span>
   {% if messages %}
