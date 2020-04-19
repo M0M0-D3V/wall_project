@@ -15,13 +15,16 @@ class UsersManager(models.Manager):
             errors["last_name"] = "Last name should be at least 2 characters"
         # [x] birthday is in past validate
         today = date.today().strftime("%Y-%m-%d")
-        if postData['birthday'] > today:
+        dob = postData['birthday']
+        if dob > today:
             print(
                 f"printing validations for email: postData is: {postData['birthday']} and date comparing to {today}")
             errors["birthday"] = "You're not even born yet."
 
         # [] check if birthyear is at least 13 years
-
+        # current = date.today()
+        # if (dob.year + 13, dob.month, dob.day) < (current.year, current.month, current.day):
+        #     errors["birthday"] = "Must be at least 13 years old to register."
         # [x] email address should be valid
         EMAIL_REGEX = re.compile(
             r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')

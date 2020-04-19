@@ -7,10 +7,11 @@ import bcrypt
 def index(request):
     # [x] root render where users can register or login
     # [] context to hold session stuff
-    # if request.session:
-    #     return redirect("/success")
+    if request.session:
+        return redirect("/wall")
     # request.session['first_name'] = ''
-    return render(request, "index.html")
+    else:
+        return render(request, "index.html")
 
 
 def register(request):
@@ -35,13 +36,13 @@ def register(request):
         # [x] create hash for pw
         pw_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
         print(f"pw hash: {pw_hash}")
-        confirm_password = request.POST['confirm_password']
+        # confirm_password = request.POST['confirm_password']
         # [x] create user
         Users.objects.create(first_name=first_name, last_name=last_name,
                              birthday=birthday, email=email, password=pw_hash)
 
         messages.success(request, "Successfully registered!")
-        return redirect("/success")
+        return redirect("/wall")
 
 
 def login(request):
@@ -57,7 +58,7 @@ def login(request):
         if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
             request.session['first_name'] = logged_user.first_name
             messages.success(request, "Successfully logged in!")
-            return redirect("/success")
+            return redirect("/wall")
     else:
         messages.error(request, "Password did not match")
     return redirect("/")
@@ -67,9 +68,9 @@ def success(request):
     if request.session['first_name'] == '':
         return redirect("/")
     else:
-        context = {
-            "first_name": request.session['first_name']
-        }
+        # context = {
+        #     "first_name": request.session['first_name']
+        # }
         return redirect("/wall")
         # return render(request, "success.html", context)
 
