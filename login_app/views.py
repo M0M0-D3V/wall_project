@@ -70,7 +70,8 @@ def success(request):
         context = {
             "first_name": request.session['first_name']
         }
-        return render(request, "success.html", context)
+        return redirect("/wall")
+        # return render(request, "success.html", context)
 
 
 def logout(request):

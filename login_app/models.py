@@ -48,6 +48,10 @@ class UsersManager(models.Manager):
         # test whether a field matches the pattern
         if not EMAIL_REGEX.match(postData['email']):
             errors['email'] = "Email address is not in valid format"
+        # [x] email address needs to be unique
+        check_email = Users.objects.filter(email=postData['email'])
+        if not check_email:
+            errors["email"] = "Email needs to be registered first."
         # [x] password should be at least 8 char
         if len(postData['password']) < 8:
             errors["password"] = "Password needs to be at least 8 characters"
