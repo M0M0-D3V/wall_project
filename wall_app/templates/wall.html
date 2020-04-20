@@ -1,14 +1,32 @@
 {% extends 'base.html' %} {% block content %}
-<a href="{% url 'login:my_logout' %}">Log Out</a>
-<h2>Success! Welcome, {{first_name}}!</h2>
-<span>
-  {% if messages %}
-  <ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{message.tags}}" {% endif %}>
-      {{message}}
-    </li>
-    {% endfor %}
-  </ul></span
->
-{% endif %} {% endblock %}
+<div class="row">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark flex-row">
+    <a class="navbar-brand" href="{% url 'wall:my_wall' %}">CodingDojo Wall</a>
+    <h5>Success! Welcome, {{request.session.first_name}}!</h5>
+    <a href="{% url 'login:my_logout' %}">Log Off</a>
+  </nav>
+</div>
+<div class="row">
+  <div>
+    <form action="{% url 'wall:my_message' %}" method="POST" id="message">
+      {% csrf_token %}
+      <p>
+        <label for="message">Post a message</label><br />
+        <textarea
+          rows="4"
+          cols="100"
+          name="message"
+          form="message"
+          placeholder="write a message here..."
+        ></textarea>
+      </p>
+      <button class="btn btn-primary btn-sm">
+        Post a message
+      </button>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <p>loop for listing messages here in reverse order</p>
+</div>
+{% endblock %}
