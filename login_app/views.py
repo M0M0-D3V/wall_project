@@ -41,7 +41,7 @@ def register(request):
         # [x] create user
         new_user = Users.objects.create(first_name=first_name, last_name=last_name,
                                         birthday=birthday, email=email, password=pw_hash)
-        request.session['id'] = new_user.id
+        request.session['user_id'] = new_user.id
         messages.success(request, "Successfully registered!")
         return redirect("/")
 
@@ -58,9 +58,11 @@ def login(request):
         logged_user = user[0]
         if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
             request.session['first_name'] = logged_user.first_name
+            # save logged in user.id session
+            request.session['user_id'] = logged_user.id
             messages.success(request, "Successfully logged in!")
-            print(f"printing what user is: {user}")
-            # request.session['id'] = user.id
+            print(
+                f"printing what user is: {logged_user} can we get id? {logged_user.id}")
             return redirect("/")
     else:
         messages.error(request, "Password did not match")

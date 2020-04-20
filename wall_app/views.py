@@ -6,13 +6,25 @@ import bcrypt
 
 # Create your views here.
 
+# USERFUL SESSION INFO:
+# request.session['first_name']
+# request.session['user_id']
+
 
 def wall(request):
-    if 'first_name' in request.session:
+    if 'user_id' in request.session:
         # [] Display all messages from all users on the main page
+        user_id = request.session['user_id']
+        print(f"what's in user_id: {user_id}")
+        user = Users.objects.get(id=user_id)
+        all_messages = user.messages.all()
+        print(f"printing what's in all_messages: {all_messages}")
         # [] most recent message at the top
         # [] each message is clickable to redirect to just that message with relating comments...
-        return render(request, "wall.html")
+        context = {
+            "all_messages": all_messages, "user": user
+        }
+        return render(request, "wall.html", context)
     else:
         return redirect("/register")
 
@@ -20,7 +32,12 @@ def wall(request):
 def message(request):
     # [x] Allow users to post messages
     # [] process POST and add to message list with user info
-    pass
+    user_id = request.session['user_id']
+    this_user = Users.objects.get(id=user_id)
+    message = request.POST['message']
+    new_message = Messages.objects.create(message=message, user=this_user)
+    print(f"printing new message: {new_message}")
+    return redirect("/")
 
 
 def comment(request):

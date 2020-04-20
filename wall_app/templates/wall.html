@@ -1,11 +1,14 @@
 {% extends 'base.html' %} {% block content %}
 <div class="row">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark flex-row">
-    <a class="navbar-brand" href="{% url 'wall:my_wall' %}">CodingDojo Wall</a>
-    <h5>Success! Welcome, {{request.session.first_name}}!</h5>
+    <a class="navbar-brand" href="{% url 'wall:my_wall' user.id %}"
+      >CodingDojo Wall</a
+    >
+    <h5>Success! Welcome, {{user.first_name}}!</h5>
     <a href="{% url 'login:my_logout' %}">Log Off</a>
   </nav>
 </div>
+
 <div class="row">
   <div>
     <form action="{% url 'wall:my_message' %}" method="POST" id="message">
@@ -14,7 +17,7 @@
         <label for="message">Post a message</label><br />
         <textarea
           rows="4"
-          cols="100"
+          cols="120"
           name="message"
           form="message"
           placeholder="write a message here..."
@@ -26,7 +29,10 @@
     </form>
   </div>
 </div>
+<br /><br />
 <div class="row">
-  <p>loop for listing messages here in reverse order</p>
+  <p>
+    loop for listing messages here in reverse order.. here>>>
+  </p>
 </div>
 {% endblock %}
