@@ -70,14 +70,14 @@ def login(request):
 
 
 def success(request):
-    if request.session['first_name'] == '':
-        return redirect("/register")
-    else:
-        # context = {
-        #     "first_name": request.session['first_name']
-        # }
-        return redirect("/")
-        # return render(request, "success.html", context)
+    # if request.session['first_name'] == '':
+    #     return redirect("/register")
+    # else:
+    #     # context = {
+    #     #     "first_name": request.session['first_name']
+    #     # }
+    return redirect("/")
+    # return render(request, "success.html", context)
 
 
 def logout(request):

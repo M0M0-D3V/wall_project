@@ -12,32 +12,41 @@ import bcrypt
 
 
 def wall(request):
+    print(f"in the wall function....")
     if 'user_id' in request.session:
         # [] Display all messages from all users on the main page
         user_id = request.session['user_id']
         print(f"what's in user_id: {user_id}")
         user = Users.objects.get(id=user_id)
-        all_messages = user.messages.all()
+        all_messages = Messages.objects.all()
+        all_users = Users.objects.all()
         print(f"printing what's in all_messages: {all_messages}")
         # [] most recent message at the top
-        # [] each message is clickable to redirect to just that message with relating comments...
+        # [] each message is clickable to redirect to just that message with relating comments in /wall...
         context = {
-            "all_messages": all_messages, "user": user
+            "all_messages": all_messages, "user": user, "all_users": all_users
         }
-        return render(request, "wall.html", context)
+        return render(request, "index.html", context)
     else:
         return redirect("/register")
 
 
-def message(request):
+def new_message(request):
     # [x] Allow users to post messages
-    # [] process POST and add to message list with user info
+    # [x] process POST and add to message list with user info
+    print(f"in the new message function! let's try to print from here")
     user_id = request.session['user_id']
+    print(f"user_id is: {user_id}")
     this_user = Users.objects.get(id=user_id)
     message = request.POST['message']
     new_message = Messages.objects.create(message=message, user=this_user)
     print(f"printing new message: {new_message}")
     return redirect("/")
+
+
+def this_message(request, user_id, message_id):
+    context = {}
+    return render(request, "wall.html", context)
 
 
 def comment(request):
