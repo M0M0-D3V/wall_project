@@ -61,8 +61,8 @@ def login(request):
             # save logged in user.id session
             request.session['user_id'] = logged_user.id
             messages.success(request, "Successfully logged in!")
-            print(
-                f"printing what user is: {logged_user} can we get id? {logged_user.id}")
+            # print(
+            # f"printing what user is: {logged_user.first_name} can we get id? {logged_user.id}")
             return redirect("/")
     else:
         messages.error(request, "Password did not match")
@@ -82,4 +82,5 @@ def success(request):
 
 def logout(request):
     request.session.flush()
+    # messages.flush()
     return redirect("/register")

@@ -1,13 +1,13 @@
 {% extends 'base.html' %} {% block content %}
 <div class="row col-lg-12">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark flex-row">
-    <a class="navbar-brand" href="{% url 'wall:my_wall' %}">CodingDojo Wall</a>
-    <h5>Success! Welcome, {{user.first_name}}!</h5>
+    <a class="navbar-brand" href="{% url 'wall:my_index' %}">CodingDojo Wall</a>
+    <h5>Welcome, {{user.first_name}}!</h5>
     <a href="{% url 'login:my_logout' %}">Log Off</a>
   </nav>
 </div>
 
-<div class="row col-lg-12">
+<div class="row col-lg-10">
   <div>
     <form action="{% url 'wall:my_new_message' %}" method="POST" id="message">
       {% csrf_token %}
@@ -31,9 +31,9 @@
 <br /><br />
 
 {% for message in all_messages reversed %}
-<div class="row col-lg-11">
+<div class="row col-lg-11 col align-self-end">
   <h5>
-    <a href="{% url wall:my_this_message %}"
+    <a href="{% url 'wall:my_this_message_on_wall' %}"
       >{{message.user.first_name}} {{message.user.last_name}} -
       {{message.created_at}}</a
     >
